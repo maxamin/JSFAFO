@@ -81,7 +81,8 @@ class AsyncCrawler:
 
                         try:
                             text = await response.text(errors="ignore")
-                        except Exception:
+                        except Exception as e:
+                            print(e)
                             text = None
 
                         return url, text, content_type

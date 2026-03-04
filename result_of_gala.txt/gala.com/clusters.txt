@@ -1,0 +1,193 @@
+
+[/galaswap] (1)
+  https://app.gala.games/galaswap
+
+[/api/v1/onramper/{id}] (1)
+  https://dex-backend-prod1.defi.gala.com/api/v1/onramper/generate-widget-url
+
+[/_nuxt/MockDataToolbar.NEf__pkt.css] (1)
+  https://gala.com/_nuxt/MockDataToolbar.NEf__pkt.css
+
+[/_nuxt/portal.esm.vG1y5qYj.js] (1)
+  https://gala.com/_nuxt/portal.esm.vG1y5qYj.js
+
+[/_nuxt/data-capture.bvfB0MPw.js] (1)
+  https://gala.com/_nuxt/data-capture.bvfB0MPw.js
+
+[/_nuxt/index.J9gHVGjw.js] (1)
+  https://gala.com/_nuxt/index.J9gHVGjw.js
+
+[/_nuxt/index.42AdCB2e.js] (1)
+  https://gala.com/_nuxt/index.42AdCB2e.js
+
+[/_nuxt/paginator.esm.kAQXh-0G.js] (1)
+  https://gala.com/_nuxt/paginator.esm.kAQXh-0G.js
+
+[] (7)
+  https://games.gala.com
+  https://connect.gala.com
+  https://dex-api-platform-dex-prod-gala.gala.com
+  https://eth.gala.games
+  https://connect.gala.com,
+  https://node.gala.com
+  https://galascan.gala.com
+
+[/_nuxt/accordiontab.esm.wFgw8-Jk.js] (1)
+  https://gala.com/_nuxt/accordiontab.esm.wFgw8-Jk.js
+
+[/_nuxt/avatar.esm.8XRp91Do.js] (1)
+  https://gala.com/_nuxt/avatar.esm.8XRp91Do.js
+
+[/_nuxt/Input.9ikVP6D-.css] (1)
+  https://gala.com/_nuxt/Input.9ikVP6D-.css
+
+[/] (2)
+  https://gala.com/
+  https://connect.gala.com/
+
+[/_nuxt/index.esm.9iW0oE7i.js] (1)
+  https://gala.com/_nuxt/index.esm.9iW0oE7i.js
+
+[/_nuxt/product.YYcwqOBD.js] (1)
+  https://gala.com/_nuxt/product.YYcwqOBD.js
+
+[/_nuxt/nuxt-link.K9pukslA.js] (1)
+  https://gala.com/_nuxt/nuxt-link.K9pukslA.js
+
+[/_nuxt/index.esm.z29aLi-8.js] (1)
+  https://gala.com/_nuxt/index.esm.z29aLi-8.js
+
+[/_nuxt/image.esm.0hc2UHSW.js] (1)
+  https://gala.com/_nuxt/image.esm.0hc2UHSW.js
+
+[/_nuxt/parseSignature.krvvxlS8.js] (1)
+  https://gala.com/_nuxt/parseSignature.krvvxlS8.js
+
+[/_nuxt/selectbutton.esm.xZ4tHsnM.js] (1)
+  https://gala.com/_nuxt/selectbutton.esm.xZ4tHsnM.js
+
+[/_nuxt/orderlist.esm.C7EzGTZb.js] (1)
+  https://gala.com/_nuxt/orderlist.esm.C7EzGTZb.js
+
+[/_nuxt/carousel.esm.yndLhHmq.js] (1)
+  https://gala.com/_nuxt/carousel.esm.yndLhHmq.js
+
+[/_nuxt/{id}.vue.Mr2RUc8S.js] (1)
+  https://gala.com/_nuxt/RegisterEthDialog.vue.Mr2RUc8S.js
+
+[/_nuxt/dock.esm.ichNQLyU.js] (1)
+  https://gala.com/_nuxt/dock.esm.ichNQLyU.js
+
+[/_nuxt/skeleton.esm.tFwBXXUf.js] (1)
+  https://gala.com/_nuxt/skeleton.esm.tFwBXXUf.js
+
+[/_nuxt/plain.tU9V2BE4.js] (1)
+  https://gala.com/_nuxt/plain.tU9V2BE4.js
+
+[/_nuxt/swaps.lNTUAinw.js] (1)
+  https://gala.com/_nuxt/swaps.lNTUAinw.js
+
+[/_nuxt/splitter.esm.HpDYPCqV.js] (1)
+  https://gala.com/_nuxt/splitter.esm.HpDYPCqV.js
+
+[/_nuxt/index.ndQiRA0j.js] (1)
+  https://gala.com/_nuxt/index.ndQiRA0j.js
+
+[/_nuxt/inputmask.esm.AKKyxgmc.js] (1)
+  https://gala.com/_nuxt/inputmask.esm.AKKyxgmc.js
+
+[/_nuxt/MockDataToolbar.ZiBm874K.js] (1)
+  https://gala.com/_nuxt/MockDataToolbar.ZiBm874K.js
+
+[/_nuxt/chip.esm.ku-RYMbc.js] (1)
+  https://gala.com/_nuxt/chip.esm.ku-RYMbc.js
+
+[/_nuxt/virtualscroller.esm.lnLUAQ65.js] (1)
+  https://gala.com/_nuxt/virtualscroller.esm.lnLUAQ65.js
+
+[/_nuxt/index.Yk-VooeE.js] (1)
+  https://gala.com/_nuxt/index.Yk-VooeE.js
+
+[/_nuxt/chips.esm.xZZHkZQM.js] (1)
+  https://gala.com/_nuxt/chips.esm.xZZHkZQM.js
+
+[/_nuxt/arrow-right.Ath9vO80.js] (1)
+  https://gala.com/_nuxt/arrow-right.Ath9vO80.js
+
+[/_nuxt/default.Ax9blaF-.js] (1)
+  https://gala.com/_nuxt/default.Ax9blaF-.js
+
+[/_nuxt/checkbox.esm._DcwYwix.js] (1)
+  https://gala.com/_nuxt/checkbox.esm._DcwYwix.js
+
+[/_nuxt/megamenu.esm.yTGX4Gw0.js] (1)
+  https://gala.com/_nuxt/megamenu.esm.yTGX4Gw0.js
+
+[/_nuxt/index.nhLj2qVX.js] (1)
+  https://gala.com/_nuxt/index.nhLj2qVX.js
+
+[/_nuxt/ccip.v08y6Qpi.js] (1)
+  https://gala.com/_nuxt/ccip.v08y6Qpi.js
+
+[/_nuxt/ref.4E-Tj7ti.js] (1)
+  https://gala.com/_nuxt/ref.4E-Tj7ti.js
+
+[/_nuxt/index.esm.ACFNg_0n.js] (1)
+  https://gala.com/_nuxt/index.esm.ACFNg_0n.js
+
+[/_nuxt/Menu.-Ukiq8BZ.js] (1)
+  https://gala.com/_nuxt/Menu.-Ukiq8BZ.js
+
+[/_nuxt/treeselect.esm.3c5856I0.js] (1)
+  https://gala.com/_nuxt/treeselect.esm.3c5856I0.js
+
+[/_nuxt/cascadeselect.esm.jCXL_6RY.js] (1)
+  https://gala.com/_nuxt/cascadeselect.esm.jCXL_6RY.js
+
+[/_nuxt/column.esm.Uqi7sLqY.js] (1)
+  https://gala.com/_nuxt/column.esm.Uqi7sLqY.js
+
+[/_nuxt/if-defined.bgZcQsk4.js] (1)
+  https://gala.com/_nuxt/if-defined.bgZcQsk4.js
+
+[/_nuxt/inputtext.esm.WC-NaV9f.js] (1)
+  https://gala.com/_nuxt/inputtext.esm.WC-NaV9f.js
+
+[/_nuxt/NavigationUtil.Tjp0QXRe.js] (1)
+  https://gala.com/_nuxt/NavigationUtil.Tjp0QXRe.js
+
+[/_nuxt/tag.esm.AYWcjtLi.js] (1)
+  https://gala.com/_nuxt/tag.esm.AYWcjtLi.js
+
+[/account] (1)
+  https://gala.com/account?page=gyri_transfer_code
+
+[/_nuxt/connect.tR4eyC2x.js] (1)
+  https://gala.com/_nuxt/connect.tR4eyC2x.js
+
+[/_nuxt/datatable.esm.wL6iIYXb.js] (1)
+  https://gala.com/_nuxt/datatable.esm.wL6iIYXb.js
+
+[/_nuxt/{id}.esm.8nfwC_Z8.js] (1)
+  https://gala.com/_nuxt/tristatecheckbox.esm.8nfwC_Z8.js
+
+[/_nuxt/dynamicdialog.esm.PIZbQhj1.js] (1)
+  https://gala.com/_nuxt/dynamicdialog.esm.PIZbQhj1.js
+
+[/_nuxt/index.oNc_ClIS.js] (1)
+  https://gala.com/_nuxt/index.oNc_ClIS.js
+
+[/_nuxt/onramp.ruaJKo2I.js] (1)
+  https://gala.com/_nuxt/onramp.ruaJKo2I.js
+
+[/_nuxt/timeline.esm.9kiSv4Gn.js] (1)
+  https://gala.com/_nuxt/timeline.esm.9kiSv4Gn.js
+
+[/_nuxt/steps.esm.P0zHMuLU.js] (1)
+  https://gala.com/_nuxt/steps.esm.P0zHMuLU.js
+
+[/_nuxt/spinner.kDDPtKOM.js] (1)
+  https://gala.com/_nuxt/spinner.kDDPtKOM.js
+
+[/_nuxt/divider.esm.O4841pFU.js] (1)
+  https://gala.com/_nuxt/divider.esm.O4841pFU.js

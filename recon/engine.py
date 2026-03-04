@@ -193,10 +193,10 @@ class ReconEngine:
 
                     except Exception:
                         pass
-
+                self.save_results(all_urls, all_emails, all_secrets, all_artifacts)
         await crawler.close()
 
-        self.save_results(all_urls, all_emails, all_secrets, all_artifacts)
+        
 
     # ------------------------------------------------
 
