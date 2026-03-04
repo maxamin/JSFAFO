@@ -34,7 +34,8 @@ async def process_target(target, args):
 
     engine = ReconEngine(
         base_url=target,
-        output=target_dir
+        output=target_dir,
+        args=args
     )
 
     await engine.run()
@@ -45,7 +46,8 @@ async def process_target(target, args):
 async def runner(targets, args):
 
     for target in targets:
-        await process_target(target, args)
+        if args.scope in target:
+            await process_target(target, args)
 
 
 def main():

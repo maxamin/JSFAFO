@@ -1,4 +1,4 @@
-import re2 as re
+import regex as re
 import html
 import tomllib
 from urllib.parse import unquote

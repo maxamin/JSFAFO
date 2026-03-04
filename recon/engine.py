@@ -51,10 +51,11 @@ class DynamicSecurityAnalyzer:
 
 class ReconEngine:
 
-    def __init__(self, base_url, output):
+    def __init__(self, base_url, output, args=None):
 
         self.base_url = base_url
         self.output = output
+        self.args = args
 
         self.dedupe = BloomDeduplicator()
         self.visited = set()
@@ -67,12 +68,30 @@ class ReconEngine:
         self.artifacts_file = os.path.join(output, "artifacts.txt")
 
     # ------------------------------------------------
+    # Scope Validation
+    # ------------------------------------------------
+
+    def in_scope(self, url):
+
+        if not self.args or not self.args.scope:
+            return True
+
+        try:
+            return self.args.scope.lower() in url.lower()
+        except:
+            return False
+
+    # ------------------------------------------------
 
     async def run(self):
 
-        crawler = AsyncCrawler()
+        crawler = AsyncCrawler(concurrency=20)
+        await crawler.start()
 
-        queue = [self.base_url]
+        queue = []
+
+        if self.in_scope(self.base_url):
+            queue.append(self.base_url)
 
         all_urls = set()
         all_emails = set()
@@ -81,12 +100,17 @@ class ReconEngine:
 
         while queue:
 
-            batch = queue[:20]
+            batch = [u for u in queue[:20] if self.in_scope(u)]
             queue = queue[20:]
 
             results = await crawler.crawl(batch)
+
             for url, content, content_type in results:
+
                 if not content:
+                    continue
+
+                if not self.in_scope(url):
                     continue
 
                 if url not in self.visited:
@@ -109,7 +133,10 @@ class ReconEngine:
                 all_artifacts.update(artifacts["cloud_exposures"])
 
                 adv_urls = detect_advanced_urls(content)
-                all_urls.update(adv_urls)
+
+                for u in adv_urls:
+                    if self.in_scope(u):
+                        all_urls.add(u)
 
                 # ----------------------------------
                 # HTML extraction
@@ -120,6 +147,9 @@ class ReconEngine:
                     links = extract_html_links(url, content)
 
                     for link in links:
+
+                        if not self.in_scope(link):
+                            continue
 
                         if not self.dedupe.seen(link):
 
@@ -133,7 +163,11 @@ class ReconEngine:
                 if "javascript" in content_type or url.endswith(".js"):
 
                     js_urls = extract_js_urls(content)
-                    all_urls.update(js_urls)
+
+                    for js in js_urls:
+
+                        if self.in_scope(js):
+                            all_urls.add(js)
 
                 # ----------------------------------
                 # Dynamic discovery (Playwright)
@@ -149,6 +183,9 @@ class ReconEngine:
 
                         for ep in analyzer.endpoints:
 
+                            if not self.in_scope(ep):
+                                continue
+
                             if not self.dedupe.seen(ep):
 
                                 self.dedupe.add(ep)
@@ -156,6 +193,8 @@ class ReconEngine:
 
                     except Exception:
                         pass
+
+        await crawler.close()
 
         self.save_results(all_urls, all_emails, all_secrets, all_artifacts)
 

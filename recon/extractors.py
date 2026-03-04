@@ -1,4 +1,4 @@
-import re2 as re
+import regex as re
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 
