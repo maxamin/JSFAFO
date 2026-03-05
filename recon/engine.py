@@ -10,6 +10,7 @@ from recon.intelligence import (
     detect_emails,
     detect_secrets,
     detect_sensitive_artifacts,
+    detect_api_endpoints,
     detect_advanced_urls
 )
 
@@ -61,7 +62,7 @@ class ReconEngine:
         self.visited = set()
 
         os.makedirs(output, exist_ok=True)
-
+        self.apis_file = os.path.join(output, "apis.txt")
         self.urls_file = os.path.join(output, "urls.txt")
         self.emails_file = os.path.join(output, "emails.txt")
         self.secrets_file = os.path.join(output, "secrets.txt")
@@ -92,7 +93,7 @@ class ReconEngine:
 
         if self.in_scope(self.base_url):
             queue.append(self.base_url)
-
+        all_apis = set()
         all_urls = set()
         all_emails = set()
         all_secrets = set()
@@ -123,8 +124,15 @@ class ReconEngine:
 
                 emails = detect_emails(content)
                 all_emails.update(emails)
-
+                api_endpoints = detect_api_endpoints(content, url)
+                for api in api_endpoints:
+                    if api not in all_apis:
+                        all_apis.add(api)
+                        if not self.dedupe.seen(api):
+                            self.dedupe.add(api)
+                            queue.append(api)
                 secrets = detect_secrets(content)
+                adv_urls = detect_advanced_urls(content)
                 for k in secrets:
                     all_secrets.update(secrets[k])
 
@@ -193,15 +201,18 @@ class ReconEngine:
 
                     except Exception:
                         pass
-                self.save_results(all_urls, all_emails, all_secrets, all_artifacts)
+                self.save_results(all_urls, all_emails, all_secrets, all_artifacts, all_apis)
         await crawler.close()
 
         
 
     # ------------------------------------------------
 
-    def save_results(self, urls, emails, secrets, artifacts):
-
+    def save_results(self, urls, emails, secrets, artifacts,apis):
+        with open(self.apis_file, "w") as f:
+            for a in sorted(apis):
+                f.write(a + "\n")
+        
         with open(self.urls_file, "w") as f:
             for u in sorted(urls):
                 f.write(u + "\n")

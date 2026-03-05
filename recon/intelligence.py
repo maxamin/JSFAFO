@@ -117,6 +117,126 @@ def detect_advanced_urls(content):
 
     return set(URL_REGEX.findall(content))
 
+def detect_api_endpoints(content, base_url=None):
+
+
+    results = set()
+
+    # ----------------------------
+    # 1️⃣ Direct Path-Based APIs
+    # ----------------------------
+    path_patterns = [
+        r'/api(?:/v?\d+)?/[^\s"\'<>`]+',
+        r'/v\d+/[^\s"\'<>`]+',
+        r'/graphql[^\s"\'<>`]*',
+        r'/graphiql[^\s"\'<>`]*',
+        r'/oauth[^\s"\'<>`]*',
+        r'/auth[^\s"\'<>`]*',
+        r'/admin[^\s"\'<>`]*',
+        r'/internal/[^\s"\'<>`]+',
+        r'/private/[^\s"\'<>`]+',
+        r'/backend/[^\s"\'<>`]+',
+        r'/service/[^\s"\'<>`]+',
+        r'/rest/[^\s"\'<>`]+',
+        r'/webhook/[^\s"\'<>`]+',
+        r'/callback/[^\s"\'<>`]+'
+    ]
+
+    for pattern in path_patterns:
+        matches = re.findall(pattern, content, re.IGNORECASE)
+        for m in matches:
+            try:
+                if base_url:
+                    results.add(urljoin(base_url, m))
+                else:
+                    results.add(m)
+            except:
+                continue
+
+    # ----------------------------
+    # 2️⃣ Full API URLs
+    # ----------------------------
+    full_url_pattern = r'https?://[a-zA-Z0-9\.-]+(?:/api|/v\d+|/graphql|/auth|/admin)[^\s"\']*'
+    matches = re.findall(full_url_pattern, content, re.IGNORECASE)
+
+    for m in matches:
+        results.add(m)
+
+    # ----------------------------
+    # 3️⃣ JS Fetch / Axios / XHR
+    # ----------------------------
+    js_patterns = [
+        r'fetch\(\s*[\'"`](.*?)[\'"`]',
+        r'axios\.(?:get|post|put|delete|patch)\(\s*[\'"`](.*?)[\'"`]',
+        r'open\(\s*[\'"`](GET|POST|PUT|DELETE|PATCH)[\'"`]\s*,\s*[\'"`](.*?)[\'"`]',
+        r'url\s*:\s*[\'"`](.*?)[\'"`]'
+    ]
+
+    for pattern in js_patterns:
+        matches = re.findall(pattern, content, re.IGNORECASE | re.DOTALL)
+
+        for match in matches:
+            if isinstance(match, tuple):
+                for m in match:
+                    if m and "/" in m:
+                        try:
+                            if base_url:
+                                results.add(urljoin(base_url, m))
+                            else:
+                                results.add(m)
+                        except:
+                            continue
+            else:
+                if match and "/" in match:
+                    try:
+                        if base_url:
+                            results.add(urljoin(base_url, match))
+                        else:
+                            results.add(match)
+                    except:
+                        continue
+
+    # ----------------------------
+    # 4️⃣ WebSocket APIs
+    # ----------------------------
+    ws_pattern = r'wss?://[^\s"\']+'
+    ws_matches = re.findall(ws_pattern, content)
+
+    for ws in ws_matches:
+        results.add(ws)
+
+    # ----------------------------
+    # 5️⃣ Dev / Staging / Internal Subdomains
+    # ----------------------------
+    subdomain_api_pattern = r'https?://(?:api|dev|staging|internal|backend)\.[a-zA-Z0-9\.-]+[^\s"\']*'
+    matches = re.findall(subdomain_api_pattern, content, re.IGNORECASE)
+
+    for m in matches:
+        results.add(m)
+
+    # ----------------------------
+    # 6️⃣ Clean & Deduplicate
+    # ----------------------------
+    cleaned = set()
+
+    for url in results:
+        if not url:
+            continue
+
+        if len(url) < 6:
+            continue
+
+        if any(noise in url for noise in [
+            "__webpack",
+            "node_modules",
+            ".map",
+            "webpackChunk"
+        ]):
+            continue
+
+        cleaned.add(url.strip())
+
+    return cleaned
 
 # --------------------------------------------------
 # Sensitive artifact detection
