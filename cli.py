@@ -96,7 +96,7 @@ def main():
     targets = load_targets(args)
 
     print(f"[+] Loaded {len(targets)} targets")
-
+    
     asyncio.run(runner(targets, args))
 
     print("\n[+] All targets processed successfully.")

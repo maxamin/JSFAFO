@@ -225,15 +225,28 @@ def clean_links(links):
 
 def structural_template(url):
 
-    path = urlparse(url).path
+    if not isinstance(url, str):
+        return None
 
-    # Normalize integers
+    url = url.strip()
+
+    if not url.startswith(("http://", "https://")):
+        return None
+
+    try:
+        parsed = urlparse(url)
+    except ValueError:
+        return None
+
+    path = parsed.path
+
+    if not path:
+        path = "/"
+
+    # normalize numbers
     path = re.sub(r'/\d+', '/{int}', path)
 
-    # Normalize UUID / hashes
+    # normalize hashes
     path = re.sub(r'/[0-9a-fA-F]{8,}', '/{hash}', path)
-
-    # Normalize long strings
-    path = re.sub(r'/[A-Za-z0-9_-]{16,}', '/{id}', path)
 
     return path
