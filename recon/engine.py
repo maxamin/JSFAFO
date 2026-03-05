@@ -128,7 +128,7 @@ class ReconEngine:
                 for k in secrets:
                     all_secrets.update(secrets[k])
 
-                artifacts = detect_sensitive_artifacts(content)
+                artifacts = detect_sensitive_artifacts(content,url)
                 all_artifacts.update(artifacts["sensitive_files"])
                 all_artifacts.update(artifacts["cloud_exposures"])
 

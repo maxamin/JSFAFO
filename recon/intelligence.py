@@ -2,7 +2,7 @@ import regex as re
 import html
 import tomllib
 from urllib.parse import unquote
-
+from urllib.parse import urljoin
 
 # --------------------------------------------------
 # Load Gitleaks rules from local TOML
@@ -122,7 +122,7 @@ def detect_advanced_urls(content):
 # Sensitive artifact detection
 # --------------------------------------------------
 
-def detect_sensitive_artifacts(content):
+def detect_sensitive_artifacts(content,base_url=None):
 
     findings = {
         "sensitive_files": set(),
@@ -132,19 +132,19 @@ def detect_sensitive_artifacts(content):
     sensitive_patterns = [
 
     # ENV / configuration
-    r'\.env',
-    r'\.env\.local',
-    r'\.env\.dev',
-    r'\.env\.prod',
-    r'\.env\.staging',
-    r'\.env\.backup',
-    r'\.env\.example',
+    r'[\w\-/\.]*\.env',
+    r'[\w\-/\.]*\.env\.local',
+    r'[\w\-/\.]*\.env\.dev',
+    r'[\w\-/\.]*\.env\.prod',
+    r'[\w\-/\.]*\.env\.staging',
+    r'[\w\-/\.]*\.env\.backup',
+    r'[\w\-/\.]*\.env\.example',
 
     # Git / source control
-    r'\.git/config',
-    r'\.gitignore',
-    r'\.gitmodules',
-    r'\.gitattributes',
+    r'[\w\-/\.]*\.git/config',
+    r'[\w\-/\.]*\.gitignore',
+    r'[\w\-/\.]*\.gitmodules',
+    r'[\w\-/\.]*\.gitattributes',
 
     # SSH / keys
     r'id_rsa',
@@ -153,7 +153,7 @@ def detect_sensitive_artifacts(content):
     r'id_ed25519',
     r'authorized_keys',
     r'known_hosts',
-    r'\.ssh/config',
+    r'[\w\-/\.]*\.ssh/config',
 
     # WordPress
     r'wp-config\.php',
@@ -162,60 +162,60 @@ def detect_sensitive_artifacts(content):
     r'wp-config\.php\.old',
 
     # Backup files
-    r'\.bak',
-    r'\.backup',
-    r'\.old',
-    r'\.orig',
-    r'\.save',
-    r'\.swp',
+    r'[\w\-/\.]*\.bak',
+    r'[\w\-/\.]*\.backup',
+    r'[\w\-/\.]*\.old',
+    r'[\w\-/\.]*\.orig',
+    r'[\w\-/\.]*\.save',
+    r'[\w\-/\.]*\.swp',
 
     # Database dumps
-    r'\.sql',
-    r'\.sqlite',
-    r'\.db',
-    r'\.dump',
+    r'[\w\-/\.]*\.sql',
+    r'[\w\-/\.]*\.sqlite',
+    r'[\w\-/\.]*\.db',
+    r'[\w\-/\.]*\.dump',
 
     # Config files
-    r'\.ini',
-    r'\.conf',
-    r'\.config',
-    r'\.cfg',
-    r'\.yml',
-    r'\.yaml',
-    r'\.toml',
+    r'[\w\-/\.]*\.ini',
+    r'[\w\-/\.]*\.conf',
+    r'[\w\-/\.]*\.config',
+    r'[\w\-/\.]*\.cfg',
+    r'[\w\-/\.]*\.yml',
+    r'[\w\-/\.]*\.yaml',
+    r'[\w\-/\.]*\.toml',
 
     # Cloud credentials
     r'aws_credentials',
     r'credentials\.json',
     r'gcloud_credentials',
-    r'\.aws/credentials',
-    r'\.azure/credentials',
+    r'[\w\-/\.]*\.aws/credentials',
+    r'[\w\-/\.]*\.azure/credentials',
 
     # Docker / container
     r'docker-compose\.yml',
     r'docker-compose\.yaml',
     r'Dockerfile',
-    r'\.docker/config\.json',
+    r'[\w\-/\.]*\.docker/config\.json',
 
     # Kubernetes
     r'kubeconfig',
-    r'\.kube/config',
+    r'[\w\-/\.]*\.kube/config',
     r'kubernetes\.yml',
     r'kubernetes\.yaml',
 
     # Private keys
-    r'\.pem',
-    r'\.key',
-    r'\.crt',
-    r'\.p12',
-    r'\.pfx',
+    r'[\w\-/\.]*\.pem',
+    r'[\w\-/\.]*\.key',
+    r'[\w\-/\.]*\.crt',
+    r'[\w\-/\.]*\.p12',
+    r'[\w\-/\.]*\.pfx',
 
     # Logs
-    r'\.log',
+    r'[\w\-/\.]*\.log',
 
     # CI/CD
-    r'\.github/workflows',
-    r'\.gitlab-ci\.yml',
+    r'[\w\-/\.]*\.github/workflows',
+    r'[\w\-/\.]*\.gitlab-ci\.yml',
     r'jenkinsfile',
 
     # Package configs
@@ -234,22 +234,45 @@ def detect_sensitive_artifacts(content):
     # Misc sensitive
     r'passwd',
     r'shadow',
-    r'\.htpasswd',
-    r'\.htaccess',
-    r'\.DS_Store',
-    r'\.npmrc',
-    r'\.pypirc',
+    r'[\w\-/\.]*\.htpasswd',
+    r'[\w\-/\.]*\.htaccess',
+    r'[\w\-/\.]*\.DS_Store',
+    r'[\w\-/\.]*\.npmrc',
+    r'[\w\-/\.]*\.pypirc',
     ]
 
     for pattern in sensitive_patterns:
 
         matches = re.findall(pattern, content, re.IGNORECASE)
 
-        for m in matches:
-            findings["sensitive_files"].add(m)
+        for match in matches:
+
+            match = match.strip()
+
+            # Skip empty junk
+            if len(match) < 3:
+                continue
+
+            # If it's already a full URL keep it
+            if match.startswith(("http://", "https://")):
+                findings["sensitive_files"].add(match)
+                continue
+
+            # If relative path resolve using base_url
+            if base_url:
+                try:
+                    full_url = urljoin(base_url, match)
+                    findings["sensitive_files"].add(full_url)
+                except Exception:
+                    findings["sensitive_files"].add(match)
+            else:
+                findings["sensitive_files"].add(match)
+
+    # ----------------------------
+    # Cloud exposure detection
+    # ----------------------------
 
     cloud_patterns = [
-
         r'https?://[a-z0-9.-]+\.s3\.amazonaws\.com/[^\s"\']+',
         r'https?://storage\.googleapis\.com/[^\s"\']+',
         r'https?://[a-z0-9.-]+\.blob\.core\.windows\.net/[^\s"\']+'
